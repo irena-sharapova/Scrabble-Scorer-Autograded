@@ -34,8 +34,8 @@ function oldScrabbleScorer(word) {
 // don't change the names or your program won't work as expected. //
 
 function initialPrompt() {
-   console.log("Let's play some scrabble!\n");
-   inputWord = input.question("Enter a word to score: ");
+   console.log("Let's play some Scrabble!\n");
+   let inputWord = input.question("Enter a word to score: ");
    return inputWord;
 };
 
@@ -99,15 +99,24 @@ function scorerPrompt() {
    console.log('0 - Simple: One point per character');
    console.log('1 - Vowel Bonus: Vowels are worth 3 points');
    console.log('2 - Scrabble: Uses scrabble point system');
-   inputNumber = input.question("Enter 0, 1, or 2: ");
+   let inputNumber = input.question("Enter 0, 1, or 2: ");
 
    return scoringAlgorithms[inputNumber];
 
 }
 
-function transform() { };
+function transform(oldStructure) {
+   let newStructure = {};
+   for (let key in oldStructure) {
+      for (let letter of oldStructure[key]) {
+         newStructure[letter.toLowerCase()] = key;
+      }
+  } 
+  return newStructure;
+ };
 
 function runProgram() {
+   //console.log(transform(oldPointStructure));
    let inputWord = initialPrompt();
    // let score = oldScrabbleScorer(inputWord);
    // console.log(score);
