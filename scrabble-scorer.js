@@ -41,7 +41,7 @@ function initialPrompt() {
 
 
 function simpleScorer(word) {
-   // word = word.toUpperCase();
+   word = word.toUpperCase();
    // let score = 0;
    // for (let i = 0; i < word.length; i++) {
    //    score +=1;
@@ -67,13 +67,8 @@ function vowelBonusScorer(word) {
    return score;
 }
 
-let newPointStructure;
-
 // let simpleScorer;
-
 // let vowelBonusScorer;
-
-let scrabbleScorer;
 
 const scoringAlgorithms = [
    {
@@ -89,13 +84,13 @@ const scoringAlgorithms = [
    {
       name: 'Scrabble',
       description: 'The traditional scoring algorithm.',
-      scorerFunction: oldScrabbleScorer
+      scorerFunction: scrabbleScorer
    }
 ];
 
-function scorerPrompt() { 
+function scorerPrompt() {
    console.log('Which scoring algorithm would you like to use?\n');
-   
+
    console.log('0 - Simple: One point per character');
    console.log('1 - Vowel Bonus: Vowels are worth 3 points');
    console.log('2 - Scrabble: Uses scrabble point system');
@@ -109,15 +104,34 @@ function transform(oldStructure) {
    let newStructure = {};
    for (let key in oldStructure) {
       for (let letter of oldStructure[key]) {
-         newStructure[letter.toLowerCase()] = key;
+         newStructure[letter.toLowerCase()] = Number(key);
       }
-  } 
-  return newStructure;
- };
+   }
+   return newStructure;
+};
+
+let newPointStructure = transform(oldPointStructure);
+
+//let scrabbleScorer;
+
+function scrabbleScorer(word) {
+   word = word.toLowerCase();
+   let score = 0;
+
+   for (let i = 0; i < word.length; i++) {
+      let letter = word[i];
+      score += newPointStructure[letter];
+   }
+
+   return score;
+};
 
 function runProgram() {
-   //console.log(transform(oldPointStructure));
    let inputWord = initialPrompt();
+   //console.log(scrabbleScorer(inputWord));
+   //console.log(transform(oldPointStructure));
+   //console.log("Letters with score '4':", oldPointStructure[4]);
+   //console.log("3rd letter within the key '4' array:", oldPointStructure[4][2]);
    // let score = oldScrabbleScorer(inputWord);
    // console.log(score);
    // let simpleScore = simpleScorer(inputWord);
@@ -126,7 +140,7 @@ function runProgram() {
    // console.log(vovelScore);
    let scorerAlgorithm = scorerPrompt();
    let score = scorerAlgorithm.scorerFunction(inputWord);
-   
+
    console.log(`Score for '${inputWord}': ${score}`);
 
 }
